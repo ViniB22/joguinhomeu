@@ -1,12 +1,12 @@
 body{
     margin: 0;
-    background-color: #4b4b4b;
+    background-color: #745a45;
 }
 
 canvas{
     margin: auto;
     position: absolute;
-    background-color: #1b1b1b;
+    background-color: #423b35;
     left: 0;
     right: 0;
     top: 0;
