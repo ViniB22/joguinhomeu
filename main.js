@@ -4,7 +4,12 @@ let little_man_in = new Man(175,250,250,350,'./img/little_man_right_2.png')
 let backGround1 = new Man(0,0,600,800, './img/mountain_background.png')
 let backGround2 = new Man(0,0,600,800, './img/pixel_mountain.png')
 let backGround3 = new Man(0,0,600,800, './img/game_over.png')
-let lil_man_left = new Man(250,600,50,100,'./img/little_man_left_1.png')
+let backGround4 = new Man(0,0,600,800, './img/victory.png')
+let lil_man_left = new Man(225,600,100,125,'./img/little_man_left_1.png')
+
+let obstaculo1 = new Obstaculos(50, -25, 75, 75, './img/rock_tipe1.png')
+let obstaculo2 = new Obstaculos(200, -350, 75, 75, './img/rock_tipe2.png')
+let obstaculo3 = new Obstaculos(350, -675, 100, 100, './img/snow_ball.png')
 
 let titulo = new Text()
 let info1 = new Text()
@@ -12,31 +17,48 @@ let info2 = new Text()
 let info3 = new Text()
 let ident = new Text()
 
+let point = new Text()
+let caunt_point = new Text()
+let faze = new Text()
+let caunt_faze = new Text()
+let life = new Text()
+let caunt_life = new Text()
+let gameOver = new Text()
+
+let vitoria = false
 let jogar = true
 let jogo = false 
 
 document.addEventListener('keydown', (e)=>{
     if(e.key === 'a' || e.key === 'ArrowLeft'){
-        lil_man_left.dir -= 10
-        // console.log('valor = ', f1.dir)
-        
+        lil_man_left.dir = -5; // Movimento mais suave
+        lil_man_left.direcaoAtual = 'left';
     }else if(e.key === 'd' || e.key === 'ArrowRight'){
-        lil_man_left.dir += 10
-        // console.log('valor = ', f1.dir)
+        lil_man_left.dir = 5; // Movimento mais suave
+        lil_man_left.direcaoAtual = 'right';
     }
     console.log(e.key)
 })
 
 document.addEventListener('keyup', (e)=>{
-    if(e.key === 'a' || e.key === 'ArrowLeft'){
-        lil_man_left.dir = 0
-    }else if(e.key === 'd' || e.key === 'ArrowRight'){
-        lil_man_left.dir = 0
+    if(e.key === 'a' || e.key === 'ArrowLeft' || e.key === 'd' || e.key === 'ArrowRight'){
+        lil_man_left.dir = 0;
     }
 })
 
 document.addEventListener('keypress', (e)=>{
     if(e.key === ' '){
+        if (vitoria) {
+            // Reinicia o jogo
+            lil_man_left.pts = 0
+            lil_man_left.vida = 5
+            lil_man_left.faze = 1
+            lil_man_left.velocidadeObstaculos = 2
+            vitoria = false
+            obstaculo1.recomeca()
+            obstaculo2.recomeca()
+            obstaculo3.recomeca()
+        }
         jogo = true
         // som1.play()
         // som2.pause()
@@ -59,35 +81,71 @@ function desenhaInicio() {
 }
 
 function pontos(){
-    if(carro.point(c2)){
-        carro.pts +=1
-    }else if(carro.point(c3)){
-        carro.pts += 1
+    if(lil_man_left.point(obstaculo1)){
+        lil_man_left.pts += 1
+    }else if(lil_man_left.point(obstaculo2)){ 
+        lil_man_left.pts += 1
+    }else if(lil_man_left.point(obstaculo3)){
+        lil_man_left.pts += 1
     }
 }
-
-function desenhar(){
-    // t1.des_text('Pontos: ',360,24,'yellow','26px Times')
-    // t2.des_text(carro.pts,442,24,'yellow','26px Times')
-    // t3.des_text('Vida: ',40,24,'yellow','26px Times')
-    // t4.des_text(carro.vida,100,24,'yellow','26px Times')
-
-    if(jogar){
-        backGround2.draw_man_img()
-    }else{
-        // c1.des_carro()
-        // t5.des_text(' Game Over',120,340,'yellow','46px Times')
-    }  
+function colisao(){
+    if(lil_man_left.colid(obstaculo1)){
+        lil_man_left.vida -= 1;
+        obstaculo1.recomeca();
+    }else if(lil_man_left.colid(obstaculo2)){
+        lil_man_left.vida -= 1;
+        obstaculo2.recomeca();
+    }else if(lil_man_left.colid(obstaculo3)){
+        lil_man_left.vida -= 1;
+        obstaculo3.recomeca();
+    }
 }
+// Adicione esta linha no início para carregar o sprite inicial corretamente
+// lil_man_left.a = './img/little_man_left_1.png';
+
 function atualizar(){
     if(jogar){
-        // motor.play()
-        // carro.mov_carro()
-        // carro.anim('carro_01_')
-        // pontos()
-        // colisao()
-        // game_over()
+        lil_man_left.verificarFaze()  
+         
+        obstaculo1.mov_obs(lil_man_left.velocidadeObstaculos)
+        obstaculo2.mov_obs(lil_man_left.velocidadeObstaculos)
+        obstaculo3.mov_obs(lil_man_left.velocidadeObstaculos)
+        
+        pontos()
     }
+}
+
+
+// Modifique a função desenhar() para incluir os obstáculos
+function desenhar(){
+    if (vitoria) {
+        // Tela de vitória
+        backGround4.draw()  // Usando o background de game over ou crie um novo para vitória
+        titulo.des_text('VITÓRIA!', 150, 300, 'gold', '80px Times')
+        info1.des_text(`Você atingiu ${lil_man_left.PONTUACAO_MAXIMA} pontos!`, 120, 400, 'white', '40px Times')
+        info2.des_text('Pressione ESPAÇO para jogar novamente', 80, 500, 'white', '30px Times')
+    } 
+    else if(jogar){
+        backGround2.draw_man_img()
+        lil_man_left.draw_man_img()
+        
+        // Desenhe os obstáculos
+        obstaculo1.draw()
+        obstaculo2.draw()
+        obstaculo3.draw()
+        
+        point.des_text('Pontos: ',360 + 50,24,'yellow','26px Times')
+        caunt_point.des_text(lil_man_left.pts,442 + 50,24,'yellow','26px Times')
+        faze.des_text('Fase: ',220 + 50,24,'yellow','26px Times')
+        caunt_faze.des_text(lil_man_left.faze,280 + 50,24,'yellow','26px Times')  // Corrigi a posição para não sobrepor
+        life.des_text('Vida: ',40 + 50,24,'yellow','26px Times')
+        caunt_life.des_text(lil_man_left.vida,100 + 50,24,'yellow','26px Times')
+    } 
+    else{
+        backGround3.draw()
+        gameOver.des_text('Game Over',120,340,'yellow','46px Times')
+    }  
 }
 
 function main() {
