@@ -25,21 +25,20 @@ class Man extends Obj{
     pontuacaoMaxima = 100
 
     verificarFaze() {
-        if (this.pts >= this.PONTUACAO_MAXIMA) {
-            this.pts = this.PONTUACAO_MAXIMA
-            vitoria = true
-            jogo = false  
-            return
+        if (this.pts >= this.pontuacaoMaxima) {
+            this.pts = this.pontuacaoMaxima;
+            vitoria = true;
+            jogar = false;
+            return;
         }
-
-        // A cada 10 pontos, avança para a próxima faze
-        const novaFaze = Math.floor(this.pts / 20) + 1
+    
+        // A cada 20 pontos, avança de fase
+        const novaFaze = Math.floor(this.pts / 20) + 1;
         
         if (novaFaze > this.faze) {
-            this.faze = novaFaze
-            this.velocidadeObstaculos += 1.5 
-            console.log(`Fase ${this.faze}! Velocidade aumentada para ${this.velocidadeObstaculos}`)
-            
+            this.faze = novaFaze;
+            this.velocidadeObstaculos += 1.5;
+            console.log(`Fase ${this.faze}! Velocidade: ${this.velocidadeObstaculos}`);
         }
     }
 
@@ -59,51 +58,32 @@ class Man extends Obj{
             // Atualiza o sprite baseado na direção
             if (this.direcaoAtual === 'left') {
                 this.a = `./img/${this.animacaoEsquerda[this.frameAnimacao]}.png`;
-            } else {
+            } else if (this.direcaoAtual === 'right') {
                 this.a = `./img/${this.animacaoDireita[this.frameAnimacao]}.png`;
             }
         }
     }
 
     mov_man_img(){
-        this.atualizarAnimacao(); // Atualiza a animação
-        
         this.x += this.dir;
-        
+            
+        // Atualizar animação apenas se estiver se movendo
+        if (this.dir !== 0) {
+            this.atualizarAnimacao();
+        }
+            
         // Limites da tela
-        if(this.x <= 0){
+        if(this.x <= 0) {
             this.x = 0;
-        }else if(this.x + this.w >= 600){
+        } else if(this.x + this.w >= 600) {
             this.x = 600 - this.w;
         }
     }
-}
 
     draw_man_img(){
         let img = new Image()
         img.src = this.a
         des.drawImage(img,this.x,this.y,this.w,this.h)
-    }
-
-    anim(nome){
-        this.tempo += 1
-        if(this.tempo > 12){
-            this.tempo = 0 
-            this.frame += 1
-        }
-        if(this.frame > 3){
-            this.frame = 1
-        }
-        this.a = "img/"+nome+this.frame+".png"
-    }
-
-    mov_man_img(){
-        this.x += this.dir 
-        if(this.x <= 2){
-            this.x = 2
-        }else if(this.x >= 416){
-            this.x = 416
-        }
     }
 
     point(objeto){
@@ -114,14 +94,14 @@ class Man extends Obj{
         }
     }
     
-    colid(objeto){
-        if((this.x < objeto.x + objeto.w)&&
-          (this.x + this.w > objeto.x)&&
-          (this.y < objeto.y + objeto.h)&&
-          (this.y + this.h > objeto.y)){
-            return true
-        }else{
-            false
+    colid(objeto) {
+        if ((this.x < objeto.x + objeto.w) &&
+            (this.x + this.w > objeto.x) &&
+            (this.y < objeto.y + objeto.h) &&
+            (this.y + this.h > objeto.y)) {
+            return true;
+        } else {
+            return false; // Adicionando o return faltante
         }
     }
 }
