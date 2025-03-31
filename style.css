@@ -4,8 +4,8 @@ body {
 }
 
 img {
-    width: 99.5vw;
-    height: 99.5vh;
+    width: 99vw;
+    height: 99vh;
     object-fit: cover;
 }
 
