@@ -21,7 +21,7 @@ class Man extends Obj{
     frame = 1
     tempo = 0
     faze = 1  
-    velocidadeObstaculos = 2  
+    velocidadeObstaculos = 4  
     pontuacaoMaxima = 100
 
     verificarFaze() {
@@ -115,7 +115,7 @@ class Obstaculos extends Man {
     
     recomeca(){
         this.y = -100
-        this.x = Math.floor(Math.random() * ((416 - 2 + 1) + 2))
+        this.x = Math.floor(Math.random() * ((540 - 2 + 1) + 2))
     }
 }
 
