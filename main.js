@@ -41,6 +41,7 @@ let caunt_faze = new Text()
 let life = new Text()
 let caunt_life = new Text()
 let gameOver = new Text()
+let infostart = new Text()
 
 let vitoria = false
 let jogar = true
@@ -152,8 +153,8 @@ function desenhar(){
         // Tela de vitória
         backGround4.draw();
         titulo.des_text('VITÓRIA!', 100, 300, 'gold', '80px Times');
-        info1.des_text(`Pontuação máxima alcançada: ${lil_man_left.pts}`, 80, 400, 'white', '32px Times');
-        info2.des_text('Pressione ESPAÇO para jogar novamente', 65, 500, 'white', '28px Times');
+        info1.des_text(`Pontuação máxima alcançada: ${lil_man_left.pts}`, 65, 400, 'darkyellow', '32px Times',true);
+        info2.des_text('Pressione ESPAÇO para jogar novamente', 50, 500, 'darkyellow', '28px Times',true);
     }
     else if(jogar){
         backGround2.draw_man_img();
@@ -173,7 +174,8 @@ function desenhar(){
     } 
     else{
         backGround3.draw()
-        gameOver.des_text('Game Over',160,340,'purple','58px Times')
+        gameOver.des_text('Game Over',160,400,'purple','58px Times')
+        infostart.des_text('Aperte ESPAÇO para tentar de novo',85,585,'purple','32px Times')
         musica.pause()
         sound_track.pause()
         lose.play()
