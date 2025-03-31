@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="Util.js"defer></script>
     <script src="main.js"defer></script>
+    <script src="play.js" defer></script>
     <title>Document</title>
 </head>
 <body>
+    <button class="back-button" id="backButton">Voltar</button>
+    
+    <!-- Tela de início -->
+    <div class="start-screen" id="startScreen">
+        <img src="./img/hill.jpg" alt="Background" class="blur-background">
+        <button class="start-button" id="startButton">Jogar</button>
+    </div>
+    
+    <!-- Conteúdo do jogo -->
     <img src="./img/hill.jpg" alt="">
-    <canvas id="des" width="600" height="800"></canvas>    
+    <canvas id="des" width="600" height="800"></canvas>
 </body>
 </html>
